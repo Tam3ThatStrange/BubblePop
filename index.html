@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bubble Pop Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      background-color: #001f3f;
+    }
+
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 24px;
+      z-index: 10;
+    }
+
+    .bubble {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(173, 216, 230, 0.8);
+      box-shadow: 0 0 10px #00ffff;
+      cursor: pointer;
+      animation: floatDown linear;
+    }
+
+    @keyframes floatDown {
+      from {
+        transform: translateY(-80px);
+      }
+      to {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<div id="timer">Time: 0</div>
+
+<script>
+  const scoreEl = document.getElementById('score');
+  const timerEl  = document.getElementById('timer');
+  let time = 0;
+  let score = 0;
+
+  setInterval(() => {
+    time++;
+    timerEl.textContent = `Time: ${time}`;
+  }, 1000);
+
+  function createBubble() {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    
+    // Random horizontal position
+    const x = Math.random() * (window.innerWidth - 60);
+    bubble.style.left = `${x}px`;
+
+    // Random animation speed
+    const duration = Math.random() * 3 + 2; // 2s to 5s
+    bubble.style.animationDuration = `${duration}s`;
+
+    // Remove bubble when animation ends (off-screen)
+    bubble.addEventListener('animationend', () => {
+      bubble.remove();
+    });
+
+    // Handle popping the bubble
+    bubble.addEventListener('click', () => {
+      bubble.remove();
+      score++;
+      scoreEl.textContent = `Score: ${score}`;
+    });
+
+    document.body.appendChild(bubble);
+  }
+
+  // Create bubbles at intervals
+  setInterval(createBubble, 800);
+</script>
+
+</body>
+</html>
